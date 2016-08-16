@@ -1,0 +1,29 @@
+{
+  "name": "giant-bomb",
+  "version": "1.0.0",
+  "description": "JavaScript wrapper for the Giant Bomb API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jacobjordan94/GiantBomb.js.git"
+  },
+  "keywords": [
+    "giant",
+    "bomb",
+    "giantbomb"
+    "wrapper",
+    "api"
+  ],
+  "author": "Jacob Jordan <jacobjordan94@live.com>",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/jacobjordan94/GiantBomb.js/issues"
+  },
+  "homepage": "https://github.com/jacobjordan94/GiantBomb.js#readme",
+  "dependencies": {
+    "request": "^2.74.0"
+  }
+}
