@@ -85,11 +85,4 @@ function GiantBomb(API, userAgent){
 	}
 }
 
-var gb = new GiantBomb('2e8444ba6357268f7acb53f7b49fa0e4b276d766', 'agent')
-gb.getFranchises({
-	limit: 2
-}, function(error, response, body){
-	console.dir(body);
-});
-
 module.exports = GiantBomb; 
