@@ -10,38 +10,57 @@ function GiantBomb(API, userAgent){
 	this.userAgent = userAgent; 
 	this.baseURL = 'http://api.giantbomb.com';
 
-	this.search = function(query, offset, callback){
-		var url = `${this.baseURL}/search/?api_key=${this.API}&resources=game&query=${query}&field_list=id,name,image&offset=${offset}&format=json`;
+	this.search = function(options, callback){
+		var query = options.query;
+		var offset = options.offset || 0;
+		var limit = options.limit || 0;
+		var fields = options.fields;
+		var resources = options.resources; 
+		var url = `${this.baseURL}/search/?api_key=${this.API}${resources ? '&resources=' + resources.join(',') : ''}&query=${query}${fields ? '&field_list=' + fields.join(',') : ''}&offset=${offset}&format=json&limit=${limit}`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
-	this.getGame = function(id, callback){
-		var url = `${this.baseURL}/game/${id}/?api_key=${this.API}&field_list=id,name,deck,publishers,developers,franchises,image,images,genres,original_release_date,platforms,videos,api_detail_url,site_detail_url,date_added,date_last_updated&format=json`;
+	this.getGame = function(options, callback){
+		var id = options.id;
+		var fields = options.fields;
+		var url = `${this.baseURL}/game/${id}/?api_key=${this.API}${fields ? '&field_list=' + fields.join(',') : ''}&format=json`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
-	this.getVideo = function(id, callback){
-		var url = `${this.baseURL}/video/${id}/?api_key=${this.API}&format=json`;
+	this.getVideo = function(options, callback){
+		var id = options.id;
+		var fields = options.fields;
+		var url = `${this.baseURL}/video/${id}/?api_key=${this.API}${fields ? '&field_list=' + fields.join(',') : ''}&format=json`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
-	this.getPlatform = function(id, callback){
-		var url = `${this.baseURL}/platform/${id}/?api_key=${this.API}&field_list=id,name,abbreviation,deck,api_detail_url,image&format=json`;
+	this.getPlatform = function(options, callback){
+		var id = options.id;
+		var fields = options.fields;
+		var url = `${this.baseURL}/platform/${id}/?api_key=${this.API}${fields ? '&field_list=' + fields.join(',') : ''}&format=json`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
-	this.getPlatforms = function(offset, callback){
-		var url = `${this.baseURL}/platforms/?api_key=${this.API}&field_list=id,name,abbreviation,deck&offset=${offset}&format=json`;
+	this.getPlatforms = function(options, callback){
+		var offset = options.offset || 0;
+		var limit = options.limit || 0;
+		var fields = options.fields;
+		var url = `${this.baseURL}/platforms/?api_key=${this.API}${fields ? '&field_list=' + fields.join(',') : ''}&offset=${offset}&format=json&limit=${limit}`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
-	this.getFranchise = function(id, callback){
-		var url = `${this.baseURL}/franchise/${id}/?api_key=${this.API}&field_list=id,name,deck,api_detail_url,image&format=json`;
+	this.getFranchise = function(options, callback){
+		var id = options.id;
+		var fields = options.fields;
+		var url = `${this.baseURL}/franchise/${id}/?api_key=${this.API}&${fields ? '&field_list=' + fields.join(',') : ''}&format=json`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
-	this.getFranchises = function(offset, callback){
-		var url = `${this.baseURL}/franchises/?api_key=${this.API}&field_list=id,name,deck&offset=${offset}&format=json`;
+	this.getFranchises = function(options, callback){
+		var offset = options.offset || 0;
+		var limit = options.limit || 0;
+		var fields = options.fields;
+		var url = `${this.baseURL}/franchises/?api_key=${this.API}${fields ? '&field_list=' + fields.join(',') : ''}&offset=${offset}&format=json&limit=${limit}`;
 		makeRequest(url, callback, this.userAgent);
 	}
 
@@ -60,6 +79,17 @@ function GiantBomb(API, userAgent){
 			}
 		});
 	}
+
+	var buildURL = function(type){
+
+	}
 }
+
+var gb = new GiantBomb('2e8444ba6357268f7acb53f7b49fa0e4b276d766', 'agent')
+gb.getFranchises({
+	limit: 2
+}, function(error, response, body){
+	console.dir(body);
+});
 
 module.exports = GiantBomb; 
