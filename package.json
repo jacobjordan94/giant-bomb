@@ -25,5 +25,6 @@
   "homepage": "https://github.com/jacobjordan94/GiantBomb.js#readme",
   "dependencies": {
     "request": "^2.74.0"
-  }
+  },
+  "tonicExampleFilename": "example.js"
 }
