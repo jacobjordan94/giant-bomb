@@ -69,13 +69,123 @@ class GiantBomb{
 		this._makeRequest(url, callback);
 	}
 
+	getAccessory(options, callback){
+		var url = this._buildURL('accessory', options);
+		this._makeRequest(url, callback);
+	}
+
+	getAccessories(options, callback){
+		var url = this._buildURL('accessories', options);
+		this._makeRequest(url, callback);
+	}
+
+	getCharacter(options, callback){
+		var url = this._buildURL('character', options);
+		this._makeRequest(url, callback);
+	}
+
+	getCharacters(options, callback){
+		var url = this._buildURL('characters', options);
+		this._makeRequest(url, callback);
+	}
+
+	getChat(options, callback){
+		var url = this._buildURL('chat', options);
+		this._makeRequest(url, callback);
+	}
+
+	getChats(options, callback){
+		var url = this._buildURL('chats', options);
+		this._makeRequest(url, callback);
+	}
+
+	getCompany(options, callback){
+		var url = this._buildURL('company', options);
+		this._makeRequest(url, callback);
+	}
+
+	getCompanies(options, callback){
+		var url = this._buildURL('companies', options);
+		this._makeRequest(url, callback);
+	}
+
+	getConcept(options, callback){
+		var url = this._buildURL('concept', options);
+		this._makeRequest(url, callback);
+	}
+
+	getConcepts(options, callback){
+		var url = this._buildURL('concepts', options);
+		this._makeRequest(url, callback);
+	}
+
+	getFranchise(options, callback){
+		var url = this._buildURL('franchise', options);
+		this._makeRequest(url, callback);
+	}
+
+	getFranchises(options, callback){
+		var url = this._buildURL('franchises', options);
+		this._makeRequest(url, callback);
+	}
+
 	getGame(options, callback){
 		var url = this._buildURL('game', options);
 		this._makeRequest(url, callback);
 	}
 
-	getVideo(options, callback){
-		var url = this._buildURL('video', options);
+	getGames(options, callback){
+		var url = this._buildURL('games', options);
+		this._makeRequest(url, callback);	
+	}
+
+	getGameRating(options, callback){
+		var url = this._buildURL('game_rating', options);
+		this._makeRequest(url, callback);
+	}
+
+	getGameRatings(options, callback){
+		var url = this._buildURL('game_ratings', options);
+		this._makeRequest(url, callback);
+	}
+
+	getGenre(options, callback){
+		var url = this._buildURL('genre', options);
+		this._makeRequest(url, callback);
+	}
+
+	getGenres(options, callback){
+		var url = this._buildURL('genres', options);
+		this._makeRequest(url, callback);
+	}
+
+	getLocation(options, callback){
+		var url = this._buildURL('location', options);
+		this._makeRequest(url, callback);
+	}
+
+	getLocations(options, callback){
+		var url = this._buildURL('locations', options);
+		this._makeRequest(url, callback);
+	}
+
+	getObject(options, callback){
+		var url = this._buildURL('object', options);
+		this._makeRequest(url, callback);
+	}
+
+	getObjects(options, callback){
+		var url = this._buildURL('objects', options);
+		this._makeRequest(url, callback);
+	}
+
+	getPerson(options, callback){
+		var url = this._buildURL('person', options);
+		this._makeRequest(url, callback);
+	}
+
+	getPeople(options, callback){
+		var url = this._buildURL('people', options);
 		this._makeRequest(url, callback);
 	}
 
@@ -89,15 +199,120 @@ class GiantBomb{
 		this._makeRequest(url, callback);
 	}
 
-	getFranchise(options, callback){
-		var url = this._buildURL('franchise', options);
+	getPromo(options, callback){
+		var url = this._buildURL('promo', options);
 		this._makeRequest(url, callback);
 	}
 
-	getFranchises(options, callback){
-		var url = this._buildURL('franchises', options);
+	getPromos(options, callback){
+		var url = this._buildURL('promos', options);
 		this._makeRequest(url, callback);
 	}
+
+	getRatingBoard(options, callback){
+		var url = this._buildURL('rating_board');
+		this._makeRequest(url, callback);
+	}
+
+	getRatingBoards(options, callback){
+		var url = this._buildURL('rating_boards');
+		this._makeRequest(url, callback);
+	}
+
+	getRegion(options, callback){
+		var url = this._buildURL('region', options);
+		this._makeRequest(url, callback);
+	}
+
+	getRegions(options, callback){
+		var url = this._buildURL('regions', options);
+		this._makeRequest(url, callback);
+	}
+
+	getRelease(options, callback){
+		var url = this._buildURL('release', options);
+		this._makeRequest(url, callback);
+	}
+
+	getReleases(options, callback){
+		var url = this._buildURL('releases', options);
+		this._makeRequest(url, callback);
+	}
+
+	getReview(options, callback){
+		var url = this._buildURL('review', options);
+		this._makeRequest(url, callback);
+	}
+
+	getReviews(options, callback){
+		var url = this._buildURL('reviews', options);
+		this._makeRequest(url, callback);
+	}
+
+	getTheme(options, callback){
+		var url = this._buildURL('theme', options);
+		this._makeRequest(url, callback);
+	}
+
+	getThemes(options, callback){
+		var url = this._buildURL('themes', options);
+		this._makeRequest(url, callback);
+	}
+
+	getTypes(options, callback){
+		var url = this._buildURL('types', options);
+		this._makeRequest(url, callback);
+	}
+
+	getUserReview(options, callback){
+		var url = this._buildURL('user_review', options);
+		this._makeRequest(url, callback);
+	}
+
+	getUserReviews(options, callback){
+		var url = this._buildURL('user_reviews', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideo(options, callback){
+		var url = this._buildURL('video', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideos(options, callback){
+		var url = this._buildURL('videos', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideoType(options, callback){
+		var url = this._buildURL('video_type', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideosTypes(options, callback){
+		var url = this._buildURL('video_types', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideoCategory(options, callback){
+		var url = this._buildURL('video_category', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideosCategories(options, callback){
+		var url = this._buildURL('video_categories', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideoShow(options, callback){
+		var url = this._buildURL('video_show', options);
+		this._makeRequest(url, callback);
+	}
+
+	getVideosShows(options, callback){
+		var url = this._buildURL('video_shows', options);
+		this._makeRequest(url, callback);
+	}				
 }
 
 module.exports = GiantBomb;
