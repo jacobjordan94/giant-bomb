@@ -1,6 +1,6 @@
 {
   "name": "giant-bomb",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "JavaScript wrapper for the Giant Bomb API",
   "main": "giant-bomb.js",
   "scripts": {
