@@ -1,10 +1,8 @@
 # Giant Bomb API Wrapper 
 A Giant Bomb API Wrapper written for NodeJS. Easily pull information on games, franchises, platforms, etc. from the largest video game database on the internet.
 
-## Installation 
+## Installation (Requires Node v6 or higher)
 `npm install giant-bomb`
-
-***Node v6 or higher is required***
 
 ## Setup 
 ```javascript
@@ -12,19 +10,43 @@ var GiantBomb = require('giant-bomb');
 var gb = new GiantBomb('your api key', 'unique user-agent');
 ```
 
-## Current Methods
 
-| name          | parameters          | type               |
-|---------------|---------------------|--------------------|
-| search        | (options, callback) | (object, function) | 
-| getGame       | (options, callback) | (object, function) |
-| getVideo      | (options, callback) | (object, function) |
-| getPlatform   | (options, callback) | (object, function) |
-| getPlatforms  | (options, callback) | (object, function) |
-| getFranchise  | (options, callback) | (object, function) |
-| getFranchises | (options, callback) | (object, function) |
+### User-Agent? 
+YES! You now MUST provide a unique User-Agent. This changed sometime during summer 2016 and broke a lot of code. 
 
-## Example / Walkthrough
+This User-Agent can be whatever you want, but it should at least relate to your application: 
+
+Good User-Agents: 
+- '@GameAnHour - Twitter Bot - Runs a few requests every hour'
+- 'Bot for Giant Bomb Unarchived to catch live shows. Runs a single request every 5 minutes.'
+
+Bad User-Agents: 
+- 'MozillaFirefox/1.0'
+- 'totally unique'
+
+***You get the idea.***
+
+## Getting a resource by ID
+
+If you know the ID of the resource, you should use the appropriate function: 
+
+```javascript
+var id = 48190; //Overwatch
+gb.getGame({id: id, fields: ['name', 'deck']}, function(error, response, body){
+	if(!error && response.statusCode == 200){
+		console.log(body.results.name);
+		console.log(body.results.deck);
+	}
+})
+```
+Outputs: 
+```
+"Overwatch"
+"A stylish sci-fi team-based first-person shooter from Blizzard in which players
+can choose from over 20 "action figure"-esque Heroes, each with their own unique weapons and abilities."
+```
+
+## Searching for a resource
 You can test the following code at https://tonicdev.com/npm/giant-bomb 
 
 **(Remember to change Node version to >v6 and put in your own API key)**
@@ -58,24 +80,7 @@ This code will log the name of the first ten search results for the query 'Perso
 "Persona Q: Shadow of the Labyrinth"
 ```
 
-### User-Agent? 
-YES! You now MUST provide a unique User-Agent. This changed sometime during summer 2016 and broke a lot of code. 
-
-This User-Agent can be whatever you want, but it should at least relate to your application: 
-
-Good User-Agents: 
-- '@GameAnHour - Twitter Bot - Runs a few requests every hour'
-- 'Bot for Giant Bomb Unarchived to catch live shows. Runs a single request every 5 minutes.'
-
-Bad User-Agents: 
-- 'MozillaFirefox/1.0'
-- 'totally unique'
-
-***You get the idea.***
-
-## Search
-
-### Options
+### The options parameter
 This is one of the arguments passed when using any of the methods.
 
 You can make it very detailed: 
@@ -108,5 +113,3 @@ These are:
 _Note that for the search method a query MUST be provided_
 
 Check here for the values that can be included in fields: http://www.giantbomb.com/api/documentation
-
-**For the getGame() and getVideo() methods an id must be passed into the options object**
