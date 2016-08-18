@@ -210,12 +210,12 @@ class GiantBomb{
 	}
 
 	getRatingBoard(options, callback){
-		var url = this._buildURL('rating_board');
+		var url = this._buildURL('rating_board', options);
 		this._makeRequest(url, callback);
 	}
 
 	getRatingBoards(options, callback){
-		var url = this._buildURL('rating_boards');
+		var url = this._buildURL('rating_boards', options);
 		this._makeRequest(url, callback);
 	}
 
