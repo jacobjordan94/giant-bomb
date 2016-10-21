@@ -46,6 +46,11 @@ Outputs:
 can choose from over 20 "action figure"-esque Heroes, each with their own unique weapons and abilities."
 ```
 
+## Documentation 
+Note: This readme is not a substitution for actual documentation. 
+
+Please read over the documentation at https://github.com/jacobjordan94/giant-bomb/wiki
+
 ## Searching for a resource
 You can test the following code at https://tonicdev.com/npm/giant-bomb 
 
@@ -113,3 +118,25 @@ These are:
 _Note that for the search method a query MUST be provided_
 
 Check here for the values that can be included in fields: http://www.giantbomb.com/api/documentation
+
+## getUpcoming()
+Returns upcoming videos and live shows from Giant Bomb
+```javascript
+gb.getUpcoming((error, response, body) => {
+	if(!error && response.statusCode == 200){
+		console.dir(body);
+	} else {
+		console.log(body);
+	}
+});	
+```
+_Outputs_
+```javascript
+{ liveNow: null,
+  upcoming:
+   [ { type: 'Live Show',
+       title: 'Unprofessional Fridays: 10/21/2016',
+       image: 'http://static.giantbomb.com/uploads/original/23/233047/2894071-tumblr_mp6n9qzbqp1rt6ovxo1_1280.jpg',
+       date: 'Oct 21, 2016 03:00 PM',
+       premium: true } ] }
+```
