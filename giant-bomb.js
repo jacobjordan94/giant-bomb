@@ -264,6 +264,23 @@ class GiantBomb{
 		this._makeRequest(url, callback);
 	}
 
+	getUpcoming(callback){
+		var url = 'http://www.giantbomb.com/upcoming_json';
+		var options = {
+			url: url,
+			headers: {
+				'User-Agent': this.userAgent
+			}
+		};
+		request(options, function(error, response, body){
+			if(!error && response.statusCode == 200){
+				callback(error, response, JSON.parse(body));
+			} else {
+				callback(error, response, body);
+			}
+		});
+	}
+
 	getUserReview(options, callback){
 		var url = this._buildURL('user_review', options);
 		this._makeRequest(url, callback);
