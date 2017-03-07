@@ -51,6 +51,7 @@ class GiantBomb{
 		var limit = options.limit || 0;
 		var resources = options.resources;
 		var query = options.query;
+		var filter = options.filter;
 
 		var url = `${this.baseURL}/${type}` +
 	 			  `/${id ? id : ''}` +
@@ -58,10 +59,11 @@ class GiantBomb{
 		          `${query ? '&query=' + query : ''}` +
 		          `${resources ? '&resources=' + resources.join(',') : ''}` +
 		          `${fields ? '&field_list=' + fields.join(',') : ''}` +
-		          `&offset=${offset}&limit=${limit}&format=json`;
+		          `&offset=${offset}&limit=${limit}&format=json` + 
+		          `${filter ? `&filter=${filter}` : ''}`;
 		url = url.replace(/\/\//g, '/');
 
-		return url;  
+		return url;
 	}
 
 	search(options, callback){
