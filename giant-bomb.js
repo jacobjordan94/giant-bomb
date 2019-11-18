@@ -1,50 +1,33 @@
-/* 
- * by: @JacobAJordan_ <jacobjordan94@live.com>, <jacobjordan94.github.io>
- *
- * ====================================================================
- *           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
- *                   Version 2, December 2004
- *
- * Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
- *
- * Everyone is permitted to copy and distribute verbatim or modified
- * copies of this license document, and changing it is allowed as long
- * as the name is changed.
- *
- *           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
- *  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
- *
- * 0. You just DO WHAT THE FUCK YOU WANT TO.
- * ====================================================================
- * http://www.wtfpl.net/txt/copying/
- */
-
 var request = require('request');
 
-class GiantBomb{
-	constructor(apiKey, userAgent){
-		this.apiKey = apiKey;
-		this.userAgent =  userAgent;
-		this.baseURL = 'http:///api.giantbomb.com';
+class GiantBomb {
+	constructor(api_key, user_agent) {
+		this.api_key = api_key;
+		this.user_agent =  user_agent;
+		this.base_url = 'https://www.giantbomb.com/api';
 	}
 
-	_makeRequest(url, callback){
-		var options = {
-			url: url,
-			headers: {
-				'User-Agent': this.userAgent
-			}
-		};
-		request(options, function(error, response, body){
-			if(!error && response.statusCode == 200){
-				callback(error, response, JSON.parse(body));
-			} else {
-				callback(error, response, body);
-			}
+	_makeRequest(url, callback) {
+		return new Promise((resolve, reject) => {
+			var options = {
+				url: url,
+				headers: {
+					'User-Agent': this.user_agent
+				}
+			};
+			request(options, function(error, response, body){
+				if(!error && response.statusCode == 200) {
+					if (callback) callback(error, response, body);
+					resolve(body);
+				} else {
+					if (callback) callback(error, response, body);
+					reject({error, response, body});
+				}
+			});
 		});
 	}
 
-	_buildURL(type, options){
+	_buildURL(type, options) {
 		var id = options.id;
 		var fields = options.fields;
 		var offset = options.offset || 0;
@@ -52,226 +35,239 @@ class GiantBomb{
 		var resources = options.resources;
 		var query = options.query;
 		var filter = options.filter;
+		var sort = options.sort;
+		var format = options.format || 'json';
 
-		var url = `${this.baseURL}/${type}` +
-	 			  `/${id ? id : ''}` +
-		          `/?api_key=${this.apiKey}` + 
+		var url = `${this.base_url}/${type}` +
+	 			  `${id ? ('/' + id) : ''}` +
+		          `/?api_key=${this.api_key}` + 
 		          `${query ? '&query=' + query : ''}` +
 		          `${resources ? '&resources=' + resources.join(',') : ''}` +
 		          `${fields ? '&field_list=' + fields.join(',') : ''}` +
-		          `&offset=${offset}&limit=${limit}&format=json` + 
-		          `${filter ? `&filter=${filter}` : ''}`;
-		url = url.replace(/\/\//g, '/');
+		          `&offset=${offset}&limit=${limit}&format=${format}` + 
+		          `${filter ? `&filter=${filter}` : ''}` + 
+		          `${sort ? `&sort=${sort}` : ''}`;
+		// url = url.replace(/\/\//g, '/');
 
 		return url;
 	}
 
-	search(options, callback){
+	search(options, callback = null) {
 		var url = this._buildURL('search', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getAccessory(options, callback){
+	getAccessory(options, callback = null) {
 		var url = this._buildURL('accessory', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getAccessories(options, callback){
+	getAccessories(options, callback = null) {
 		var url = this._buildURL('accessories', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getCharacter(options, callback){
+	getCharacter(options, callback = null) {
 		var url = this._buildURL('character', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getCharacters(options, callback){
+	getCharacters(options, callback = null) {
 		var url = this._buildURL('characters', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getChat(options, callback){
+	getChat(options, callback = null) {
 		var url = this._buildURL('chat', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getChats(options, callback){
+	getChats(options, callback = null) {
 		var url = this._buildURL('chats', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getCompany(options, callback){
+	getCompany(options, callback = null) {
 		var url = this._buildURL('company', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getCompanies(options, callback){
+	getCompanies(options, callback = null) {
 		var url = this._buildURL('companies', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getConcept(options, callback){
+	getConcept(options, callback = null) {
 		var url = this._buildURL('concept', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getConcepts(options, callback){
+	getConcepts(options, callback = null) {
 		var url = this._buildURL('concepts', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getFranchise(options, callback){
+	getDLC(options, callback = null) {
+		var url = this._buildURL('dlc', options);
+		return this._makeRequest(url, callback);
+	}
+
+	getDLCs(options, callback = null) {
+		var url = this._buildURL('dlcs', options);
+		return this._makeRequest(url, callback);
+	}
+
+	getFranchise(options, callback) {
 		var url = this._buildURL('franchise', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getFranchises(options, callback){
+	getFranchises(options, callback = null) {
 		var url = this._buildURL('franchises', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getGame(options, callback){
+	getGame(options, callback = null) {
 		var url = this._buildURL('game', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getGames(options, callback){
+	getGames(options, callback = null) {
 		var url = this._buildURL('games', options);
-		this._makeRequest(url, callback);	
+		return this._makeRequest(url, callback);	
 	}
 
-	getGameRating(options, callback){
+	getGameRating(options, callback = null) {
 		var url = this._buildURL('game_rating', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getGameRatings(options, callback){
+	getGameRatings(options, callback = null) {
 		var url = this._buildURL('game_ratings', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getGenre(options, callback){
+	getGenre(options, callback = null) {
 		var url = this._buildURL('genre', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getGenres(options, callback){
+	getGenres(options, callback = null) {
 		var url = this._buildURL('genres', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getLocation(options, callback){
+	getLocation(options, callback = null) {
 		var url = this._buildURL('location', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getLocations(options, callback){
+	getLocations(options, callback = null) {
 		var url = this._buildURL('locations', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getObject(options, callback){
+	getObject(options, callback = null) {
 		var url = this._buildURL('object', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getObjects(options, callback){
+	getObjects(options, callback = null) {
 		var url = this._buildURL('objects', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getPerson(options, callback){
+	getPerson(options, callback = null) {
 		var url = this._buildURL('person', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getPeople(options, callback){
+	getPeople(options, callback = null) {
 		var url = this._buildURL('people', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getPlatform(options, callback){
+	getPlatform(options, callback = null) {
 		var url = this._buildURL('platform', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getPlatforms(options, callback){
+	getPlatforms(options, callback = null) {
 		var url = this._buildURL('platforms', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getPromo(options, callback){
+	getPromo(options, callback = null) {
 		var url = this._buildURL('promo', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getPromos(options, callback){
+	getPromos(options, callback = null) {
 		var url = this._buildURL('promos', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getRatingBoard(options, callback){
+	getRatingBoard(options, callback = null) {
 		var url = this._buildURL('rating_board', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getRatingBoards(options, callback){
+	getRatingBoards(options, callback = null) {
 		var url = this._buildURL('rating_boards', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getRegion(options, callback){
+	getRegion(options, callback = null) {
 		var url = this._buildURL('region', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getRegions(options, callback){
+	getRegions(options, callback = null) {
 		var url = this._buildURL('regions', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getRelease(options, callback){
+	getRelease(options, callback = null) {
 		var url = this._buildURL('release', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getReleases(options, callback){
+	getReleases(options, callback = null) {
 		var url = this._buildURL('releases', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getReview(options, callback){
+	getReview(options, callback = null) {
 		var url = this._buildURL('review', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getReviews(options, callback){
+	getReviews(options, callback = null) {
 		var url = this._buildURL('reviews', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getTheme(options, callback){
+	getTheme(options, callback = null) {
 		var url = this._buildURL('theme', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getThemes(options, callback){
+	getThemes(options, callback = null) {
 		var url = this._buildURL('themes', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getTypes(options, callback){
+	getTypes(options, callback = null) {
 		var url = this._buildURL('types', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getUpcoming(callback){
+	getUpcoming(callback = null) {
 		var url = 'http://www.giantbomb.com/upcoming_json';
 		var options = {
 			url: url,
 			headers: {
-				'User-Agent': this.userAgent
+				'User-Agent': this.user_agent
 			}
 		};
 		request(options, function(error, response, body){
@@ -283,55 +279,83 @@ class GiantBomb{
 		});
 	}
 
-	getUserReview(options, callback){
+	getUserReview(options, callback = null) {
 		var url = this._buildURL('user_review', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getUserReviews(options, callback){
+	getUserReviews(options, callback = null) {
 		var url = this._buildURL('user_reviews', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideo(options, callback){
+	getVideo(options, callback = null) {
 		var url = this._buildURL('video', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideos(options, callback){
+	getVideos(options, callback = null) {
 		var url = this._buildURL('videos', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideoType(options, callback){
+	getVideoType(options, callback = null) {
 		var url = this._buildURL('video_type', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideosTypes(options, callback){
+	getVideosTypes(options, callback = null) {
 		var url = this._buildURL('video_types', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideoCategory(options, callback){
+	getVideoCategory(options, callback = null) {
 		var url = this._buildURL('video_category', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideosCategories(options, callback){
+	getVideosCategories(options, callback = null) {
 		var url = this._buildURL('video_categories', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideoShow(options, callback){
+	getVideoShow(options, callback = null) {
 		var url = this._buildURL('video_show', options);
-		this._makeRequest(url, callback);
+		return this._makeRequest(url, callback);
 	}
 
-	getVideosShows(options, callback){
+	getVideoShows(options, callback = null) {
 		var url = this._buildURL('video_shows', options);
-		this._makeRequest(url, callback);
-	}				
+		return this._makeRequest(url, callback);
+	}
+
+	getCurrentLive(callback = null) {
+		var url = this.base_url + '/video/current-live/?api_key=' + this.api_key;
+		return this._makeRequest(url, callback);
+	}
+
+	getSavedTime(video_id, callback = null) {
+		var url = this.base_url + '/video/get-saved-time/?api_key=' + this.api_key;
+		url += '&video_id=' + video_id;
+		url += '&format=json';
+
+		return this._makeRequest(url, callback);
+	}
+
+	saveTime(video_id, time_to_save, callback = null) {
+		var url = this.base_url + '/video/save-time/?api_key=' + this.api_key;
+		url += '&video_id=' + video_id;
+		url += '&time_to_save=' + time_to_save;
+		url += '&format=json';
+
+		return this._makeRequest(url, callback);
+	}
+
+	getAllSavedTimes(callback = null) {
+		var url = this.base_url + '/video/get-all-saved-times/?api_key=' + this.api_key;
+		return this._makeRequest(url, callback);
+	}
+
 }
 
 module.exports = GiantBomb;

@@ -1,6 +1,6 @@
 {
   "name": "giant-bomb",
-  "version": "1.3.2",
+  "version": "2.0.0",
   "description": "JavaScript wrapper for the Giant Bomb API",
   "main": "giant-bomb.js",
   "scripts": {
@@ -15,10 +15,13 @@
     "bomb",
     "giantbomb",
     "wrapper",
-    "api"
+    "api",
+    "wiki",
+    "video games",
+    "video game"
   ],
   "author": "Jacob Jordan <jacobjordan94@live.com>",
-  "license": "WTFPL",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/jacobjordan94/giant-bomb/issues"
   },
