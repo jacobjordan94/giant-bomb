@@ -26,30 +26,58 @@ Bad User-Agents:
 
 ***You get the idea.***
 
+## Before Using ##
+Have a basic understanding of the Giant Bomb API
+http://www.giantbomb.com/api/documentation
+
+## What's new in 2.0? ##
+### New ###
+- Callbacks are now optional, every function will return a promise (See examples in this README, as documentation is not up to date)
+- Support for XML format (Must specify, defaults to JSON)
+- Add support for these endpoints (get-all-saved-times, save-time, get-saved-time, current-live)
+### Breaking Changes from v1.3 ###
+- Body will now always be returned as a string, you must parse the string as JSON yourself if using the JSON format
+### Planned updates ###
+- Update project wiki with up-to-date documentation
+
 ## Getting a resource by ID
 
 If you know the ID of the resource, you should use the appropriate function: 
 
 ```javascript
-var id = 48190; //Overwatch
-gb.getGame({id: id, fields: ['name', 'deck']}, function(error, response, body){
-	if(!error && response.statusCode == 200){
-		console.log(body.results.name);
-		console.log(body.results.deck);
+var id = 56733; // Super Mario Odyssey
+
+// Promise (New in 2.0)
+gb.getGame({id: id, fields: ['name', 'deck'], format: 'json'}).then((body) => {
+	let data = JSON.parse(body);
+	console.log(data.results.name);
+	console.log(data.results.deck);
+}).catch(err => {
+	console.log(err.error);
+	console.log(err.response);
+	console.log(err.body);
+});
+
+// Callback
+gb.getGame({id: id, fields: ['name', 'deck'], format: 'json'}, function(error, response, body){
+	if(!error && response.statusCode == 200) {
+		let data = JSON.parse(body);
+		console.log(data.results.name);
+		console.log(data.results.deck);
 	}
 })
 ```
 Outputs: 
 ```
-"Overwatch"
-"A stylish sci-fi team-based first-person shooter from Blizzard in which players
-can choose from over 20 "action figure"-esque Heroes, each with their own unique weapons and abilities."
+"Super Mario Odyssey"
+"Nintendo's favorite plumber and his new hat-shaped companion travel far beyond the Mushroom Kingdom in this Switch-exclusive 3D platformer."
 ```
 
 ## Documentation 
 Note: This readme is not a substitution for actual documentation. 
 
 Please read over the documentation at https://github.com/jacobjordan94/giant-bomb/wiki
+(TODO: Update documentation for 2.0)
 
 ## Searching for a resource
 You can test the following code at https://tonicdev.com/npm/giant-bomb 
@@ -61,15 +89,40 @@ var GiantBomb = require('giant-bomb');
 //Get API key at http://giantbomb.com/api
 var gb = new GiantBomb('your api key', 'your unique user agent');
 
-gb.search({query: 'Persona', fields: ['name'], limit: 10, resources: ['game']}, 
+// Callback based
+gb.search({query: 'Persona', format: 'json', fields: ['name'], limit: 10, resources: ['game']}, 
 	function(error, response, body){
 		if(!error && response.statusCode == 200){
-			body.results.forEach(game => {
+			let data = JSON.parse(body);
+			data.results.forEach(game => {
 				console.log(game.name);
 			});
 		}
 	}
 );
+
+// Promise based
+gb.search({query: 'Persona', format: 'json', fields: ['name'], limit: 10, resources: ['game']})
+	.then((body) => {
+		let data = JSON.parse(body);
+		data.results.forEach(game => {
+			console.log(game.name);
+		});
+	})
+	.catch((err) => {
+		console.log('Promise error');
+		console.log(err);
+	});
+
+// Promise based + xml format
+gb.search({query: 'Persona', format: 'xml', fields: ['name'], limit: 10, resources: ['game']})
+	.then((xml) => {
+		console.log(xml);
+	})
+	.catch((err) => {
+		console.log('Promise error');
+		console.log(err);
+	});
 ```
 This code will log the name of the first ten search results for the query 'Persona' to the console: 
 ```
