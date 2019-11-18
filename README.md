@@ -11,6 +11,7 @@ var gb = new GiantBomb('your api key', 'unique user-agent');
 Good User-Agents: 
 - '@MyCoolGiantBombAPIApp - Runs a request once an hour'
 - 'Bot for Giant Bomb Unarchived to catch live shows. Runs a single request every 5 minutes.'
+
 Bad User-Agents: 
 - 'MozillaFirefox/1.0'
 - 'totally unique'
