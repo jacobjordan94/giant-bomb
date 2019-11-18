@@ -1,129 +1,85 @@
 # Giant Bomb API Wrapper 
 A Giant Bomb API Wrapper written for NodeJS. Easily pull information on games, franchises, platforms, etc. from the largest video game database on the internet.
-
 ## Installation (Requires Node v6 or higher)
 `npm install giant-bomb`
-
 ## Setup 
 ```javascript
 var GiantBomb = require('giant-bomb');
 var gb = new GiantBomb('your api key', 'unique user-agent');
 ```
-
-
-### User-Agent? 
-YES! You now MUST provide a unique User-Agent. This changed sometime during summer 2016 and broke a lot of code. 
-
-This User-Agent can be whatever you want, but it should at least relate to your application: 
-
+### User-Agent
 Good User-Agents: 
-- '@GameAnHour - Twitter Bot - Runs a few requests every hour'
+- '@MyCoolGiantBombAPIApp - Runs a request once an hour'
 - 'Bot for Giant Bomb Unarchived to catch live shows. Runs a single request every 5 minutes.'
-
 Bad User-Agents: 
 - 'MozillaFirefox/1.0'
 - 'totally unique'
-
-***You get the idea.***
-
 ## Before Using ##
-Have a basic understanding of the Giant Bomb API
-http://www.giantbomb.com/api/documentation
-
+- Have a basic understanding of the [Giant Bomb API](http://www.giantbomb.com/api/documentation)
+- If you find the Giant Bomb API useful, you can support the site [here.](https://www.giantbomb.com/upgrade/)
 ## What's new in 2.0? ##
 ### New ###
 - Callbacks are now optional, every function will return a promise (See examples in this README, as documentation is not up to date)
 - Support for XML format (Must specify, defaults to JSON)
 - Add support for these endpoints (get-all-saved-times, save-time, get-saved-time, current-live)
+- Use HTTPS
 ### Breaking Changes from v1.3 ###
 - Body will now always be returned as a string, you must parse the string as JSON yourself if using the JSON format
 - getVideosShows() function renamed to getVideoShows()
 ### Planned updates ###
-- Update project wiki with up-to-date documentation
-
-## Getting a resource by ID
-
-If you know the ID of the resource, you should use the appropriate function: 
-
+- Add subscriber_only and page filters support to search function 
+## How to Use
+For v1.3 of this library please refer to the [wiki.]( https://github.com/jacobjordan94/giant-bomb/wiki)
+### options
+The options object is the first argument of all functions in this library unless noted.
 ```javascript
-var id = 56733; // Super Mario Odyssey
-
-// Promise (New in 2.0)
-gb.getGame({id: id, fields: ['name', 'deck'], format: 'json'}).then((body) => {
-	let data = JSON.parse(body);
-	console.log(data.results.name);
-	console.log(data.results.deck);
-}).catch(err => {
-	console.log(err.error);
-	console.log(err.response);
-	console.log(err.body);
-});
-
-// Callback
-gb.getGame({id: id, fields: ['name', 'deck'], format: 'json'}, function(error, response, body){
-	if(!error && response.statusCode == 200) {
-		let data = JSON.parse(body);
-		console.log(data.results.name);
-		console.log(data.results.deck);
-	}
-})
+let options = {
+    id: number, // id of resource to get
+    format: string = 'json', // 'json' | 'xml' - defaults to json
+    query: string, // search query - used in search() function
+    fields: string[], // fields to return - ex: ['name', 'deck'] - defaults to all
+    resources: string[], // list of resources to filter results - used in search() function, ex: ['game', 'franchise']
+    sort: string // sort filter - 'asc' | 'desc'
+    limit: number = 0, // number of results to return per page - defaults to 0
+    offset: number = 0, // return results starting with the object at the offset specified
+    filter: string, // see official giant bomb api documentation
+}; 
 ```
-Outputs: 
-```
-"Super Mario Odyssey"
-"Nintendo's favorite plumber and his new hat-shaped companion travel far beyond the Mushroom Kingdom in this Switch-exclusive 3D platformer."
-```
-
-## Documentation 
-Note: This readme is not a substitution for actual documentation. 
-
-Please read over the documentation at https://github.com/jacobjordan94/giant-bomb/wiki
-(TODO: Update documentation for 2.0)
-
-## Searching for a resource
-You can test the following code at https://tonicdev.com/npm/giant-bomb 
-
-**(Remember to change Node version to >v6 and put in your own API key)**
+### .search(options, callback?) => Promise<string\>
+You can test the following code at https://tonicdev.com/npm/giant-bomb  - **(Remember to change Node version to >v6 and put in your own API key)**
 ```javascript
-var GiantBomb = require('giant-bomb');
-
-//Get API key at http://giantbomb.com/api
-var gb = new GiantBomb('your api key', 'your unique user agent');
-
 // Callback based
 gb.search({query: 'Persona', format: 'json', fields: ['name'], limit: 10, resources: ['game']}, 
-	function(error, response, body){
-		if(!error && response.statusCode == 200){
-			let data = JSON.parse(body);
-			data.results.forEach(game => {
-				console.log(game.name);
-			});
-		}
-	}
+    function(error, response, body){
+        if(!error && response.statusCode == 200){
+            let data = JSON.parse(body);
+            data.results.forEach(game => {
+                console.log(game.name);
+            });
+        }
+    }
 );
-
 // Promise based
 gb.search({query: 'Persona', format: 'json', fields: ['name'], limit: 10, resources: ['game']})
-	.then((body) => {
-		let data = JSON.parse(body);
-		data.results.forEach(game => {
-			console.log(game.name);
-		});
-	})
-	.catch((err) => {
-		console.log('Promise error');
-		console.log(err);
-	});
-
+    .then((body) => {
+        let data = JSON.parse(body);
+        data.results.forEach(game => {
+            console.log(game.name);
+        });
+    })
+    .catch((err) => {
+        console.log('Promise error');
+        console.log(err);
+    });
 // Promise based + xml format
 gb.search({query: 'Persona', format: 'xml', fields: ['name'], limit: 10, resources: ['game']})
-	.then((xml) => {
-		console.log(xml);
-	})
-	.catch((err) => {
-		console.log('Promise error');
-		console.log(err);
-	});
+    .then((xml) => {
+        console.log(xml);
+    })
+    .catch((err) => {
+        console.log('Promise error');
+        console.log(err);
+    });
 ```
 This code will log the name of the first ten search results for the query 'Persona' to the console: 
 ```
@@ -138,51 +94,60 @@ This code will log the name of the first ten search results for the query 'Perso
 "Persona 4 The Card Battle"
 "Persona Q: Shadow of the Labyrinth"
 ```
-
-### The options parameter
-This is one of the arguments passed when using any of the methods.
-
-You can make it very detailed: 
+### .get[resource\](options, callback?) => Promise<string\>
+See Giant Bomb API Documentation for list of resources
 ```javascript
-var options = {
-  query: 'Metal Gear Solid',
-  resources: ['game', 'video', 'franchise'],
-  offset: 10,
-  limit: 20,
-  fields: ['name', 'aliases', 'platforms', 'release-date']
-};
+let id = 56733; // Super Mario Odyssey
+gb.getGame({id: id, fields: ['name', 'deck'], format: 'json'}.then(body => {
+    let data = JSON.parse(body);
+    console.log(data.results.name);
+    console.log(data.results.deck);
+})
+.catch(err => {
+    console.log(err.error);
+    console.log(err.response);
+    console.log(err.body);
+});
 ```
-Or very sparse: 
+```
+OUTPUT:
+Super Mario Odyssey
+Nintendo's favorite plumber and his new hat-shaped companion travel far beyond the Mushroom Kingdom in this Switch-exclusive 3D platformer.
+```
+### .get[resources\](options, callback?) => Promise<string\>
+See Giant Bomb API Documentation for list of resources
 ```javascript
-var options = {
-  query: 'Diablo'
-}
+gb.getGames({limit: 5, offset: 21778, fields: ['name', 'platforms']}).then(body => {
+    let data = JSON.parse(body);
+    data.results.forEach(game => {
+        console.log(`${game.name} is available on ${game.platforms.length + (game.platforms.length > 1 ? ' platforms.' : ' platform.')}`);
+    });
+})
+.catch(err => {
+    console.log(err.error);
+    console.log(err.response);
+    console.log(err.body);
+});
 ```
-**NOTE**
-
-If you do not provide a value for one of the variables in options, default values will be used.
-
-These are:
-
-- resources: all
-- fields: all
-- limit: 0
-- offset: 0
-
-_Note that for the search method a query MUST be provided_
-
-Check here for the values that can be included in fields: http://www.giantbomb.com/api/documentation
-
-## getUpcoming()
+```
+OUTPUT:
+StarCraft II: Heart of the Swarm is available on 2 platforms.
+StarCraft II: Legacy of the Void is available on 2 platforms.
+Dreamfall Chapters is available on 4 platforms.
+Blast Lacrosse is available on 1 platform.
+Ichigo Mashimaro is available on 1 platform.
+```
+### .getUpcoming(callback) => void
+**Could break at anytime**
 Returns upcoming videos and live shows from Giant Bomb
 ```javascript
 gb.getUpcoming((error, response, body) => {
-	if(!error && response.statusCode == 200){
-		console.dir(body);
-	} else {
-		console.log(body);
-	}
-});	
+    if(!error && response.statusCode == 200){
+        console.dir(body);
+    } else {
+        console.log(body);
+    }
+}); 
 ```
 _Outputs_
 ```javascript
@@ -193,4 +158,35 @@ _Outputs_
        image: 'http://static.giantbomb.com/uploads/original/23/233047/2894071-tumblr_mp6n9qzbqp1rt6ovxo1_1280.jpg',
        date: 'Oct 21, 2016 03:00 PM',
        premium: true } ] }
+```
+### .getCurrentLive() => Promise<string\>
+```javascript
+gb.getCurrentLive().then(body => {
+    let data = JSON.parse(body);
+    console.log(data);
+});
+```
+### .getSavedTime(video_id: number|string, callback?)
+```javascript
+let video_id = 19728; // Quick Look: Luigi's Mansion 3
+gb.getSavedTime(video_id).then((body) => {
+    let data = JSON.parse(body);
+    console.log(data);
+});
+```
+### .saveTime(video_id: number|string, time_to_save: number|string, callback?) => Promise<string\>
+```javascript
+// reset video progress
+let video_id = 19728; // Quick Look: Luigi's Mansion 3
+gb.saveTime(video_id, 0).then(body => {
+    let data = JSON.parse(body);
+    console.log(data);
+});
+``` 
+### .getAllSavedTimes(callback?) =>  Promise<string\>
+```javascript
+gb.getAllSavedTimes().then(body => {
+    let data = JSON.parse(body);
+    console.log(data);
+});
 ```
