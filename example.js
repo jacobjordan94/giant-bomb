@@ -3,7 +3,7 @@ var GiantBomb = require('./giant-bomb');
 // Get API key at http://giantbomb.com/api
 var gb = new GiantBomb('your-api-key', 'your-user-agent');
 
-var id = 56733
+var id = 56733 // Super Mario Odyssey
 gb.getGame({id: id, fields: ['name', 'deck'], format: 'json'}, function(error, response, body){
 	if(!error && response.statusCode == 200) {
 		let data = JSON.parse(body);
