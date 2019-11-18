@@ -35,6 +35,7 @@ http://www.giantbomb.com/api/documentation
 - Callbacks are now optional, every function will return a promise (See examples in this README, as documentation is not up to date)
 - Support for XML format (Must specify, defaults to JSON)
 - Add support for these endpoints (get-all-saved-times, save-time, get-saved-time, current-live)
+- Use HTTPS
 ### Breaking Changes from v1.3 ###
 - Body will now always be returned as a string, you must parse the string as JSON yourself if using the JSON format
 - getVideosShows() function renamed to getVideoShows()
