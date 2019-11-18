@@ -37,6 +37,7 @@ http://www.giantbomb.com/api/documentation
 - Add support for these endpoints (get-all-saved-times, save-time, get-saved-time, current-live)
 ### Breaking Changes from v1.3 ###
 - Body will now always be returned as a string, you must parse the string as JSON yourself if using the JSON format
+- getVideosShows() function renamed to getVideoShows()
 ### Planned updates ###
 - Update project wiki with up-to-date documentation
 
